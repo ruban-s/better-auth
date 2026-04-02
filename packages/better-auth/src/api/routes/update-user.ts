@@ -850,7 +850,7 @@ export const changeEmail = createAuthEndpoint(
 				if (!account || !account.password) {
 					throw APIError.from(
 						"BAD_REQUEST",
-						BASE_ERROR_CODES.CREDENTIAL_ACCOUNT_NOT_FOUND,
+						BASE_ERROR_CODES.INVALID_PASSWORD,
 					);
 				}
 				const verify = await ctx.context.password.verify({
@@ -866,7 +866,7 @@ export const changeEmail = createAuthEndpoint(
 				).getTime();
 				const freshAge = ctx.context.sessionConfig.freshAge * 1000;
 				if (Date.now() - createdAt >= freshAge) {
-					throw APIError.from("BAD_REQUEST", BASE_ERROR_CODES.SESSION_EXPIRED);
+					throw APIError.from("BAD_REQUEST", BASE_ERROR_CODES.PASSWORD_OR_FRESH_SESSION_REQUIRED);
 				}
 			}
 		}
